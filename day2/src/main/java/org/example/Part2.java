@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 
-public class Part1 {
+public class Part2 {
     public static void main(String[] args) {
         //输出./src/main/resources/1.txt文件的内容
         String path = "day2/src/main/resources/input.txt";
@@ -31,7 +31,28 @@ public class Part1 {
                 int[] arr = Arrays.stream(line.split(" "))
                         .mapToInt(Integer::parseInt)
                         .toArray();//调用isSafe方法判断是否安全
-                count+=isSafe(arr);
+                if(isSafe(arr)==1){
+                    count++;
+                }
+                else{
+                    for(int i=0;i<arr.length;i++){
+                        //去掉第i个元素获得新的数组
+                        int[] arr2=new int[arr.length-1];
+                        for(int j=0;j<arr.length;j++){
+                            if(j<i){
+                                arr2[j]=arr[j];
+                            }
+                            if(j>i){
+                                arr2[j-1]=arr[j];
+                            }
+                        }
+                        if(isSafe(arr2)==1){
+                            count++;
+                            i=arr.length;
+                        }
+                    }
+
+                }
             }
             System.out.println("count: "+count);
         } catch (IOException e) {
@@ -40,6 +61,7 @@ public class Part1 {
 
 
     }
+
     public static int isSafe(int[] arr){
         int[] arr2=new int[arr.length-1];
         int pos=0;
